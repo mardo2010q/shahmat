@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shashka & Shahmat — rating bilan</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">♟</span>
+        <div>
+          <strong>Dona klubi</strong>
+          <span id="weekLabel" class="brand-sub">Hafta retingi</span>
+        </div>
+      </div>
+      <div class="top-stats">
+        <div class="stat"><span class="stat-icon star">★</span><span id="starCount">0</span><small>yulduz</small></div>
+        <div class="stat"><span class="stat-icon coin">●</span><span id="coinCount">0</span><small>tanga</small></div>
+        <div id="profileBadge" class="profile-badge">Siz</div>
+      </div>
+    </header>
+
+    <main id="menuScreen" class="screen active">
+      <section class="hero">
+        <div>
+          <h1>Shashka yoki shahmat?</h1>
+          <p>Botga qarshi o‘yna, yutgan sayin yulduz yig‘. Hafta yakunida TOP-3 tanga oladi.</p>
+        </div>
+        <div class="hero-deco" aria-hidden="true">♞ ♛ ♟</div>
+      </section>
+
+      <section class="setup card">
+        <div class="step">
+          <div class="step-title"><span>1</span> O‘yinni tanlang</div>
+          <div class="game-grid">
+            <button type="button" class="game-card active" data-game="checkers">
+              <span class="game-emoji">⚫</span>
+              <strong>Shashka</strong>
+              <small>Majburiy yeyish, ko‘p yurish, shoh bo‘lish</small>
+            </button>
+            <button type="button" class="game-card" data-game="chess">
+              <span class="game-emoji">♚</span>
+              <strong>Shahmat</strong>
+              <small>Rokirovka, en-passant, shohmat</small>
+            </button>
+          </div>
+        </div>
+
+        <div class="step-row">
+          <div class="step">
+            <div class="step-title"><span>2</span> Rejim</div>
+            <div class="segmented" id="modeGroup">
+              <button type="button" data-mode="bot" class="active">Bot bilan (mashq)</button>
+              <button type="button" data-mode="rated">Rating rejimi</button>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-title"><span>3</span> Bot qiyinchiligi</div>
+            <div class="segmented" id="difficultyGroup">
+              <button type="button" data-difficulty="easy" class="active">Oson</button>
+              <button type="button" data-difficulty="medium">O‘rtacha</button>
+              <button type="button" data-difficulty="hard">Qiyin</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="start-row">
+          <label class="name-field">
+            <span>Ismingiz</span>
+            <input id="playerName" type="text" maxlength="16" placeholder="Siz" autocomplete="off">
+          </label>
+          <button id="startBtn" type="button" class="primary">O‘ynashni boshlash →</button>
+        </div>
+        <p class="hint">Rating rejimida har g‘alaba uchun <b>+1 yulduz</b> va <b>+5 tanga</b>. Hafta yakunida 1–2–3 o‘rinlar <b>100 / 60 / 30 tanga</b> oladi.</p>
+      </section>
+
+      <div class="panels">
+        <section class="card panel">
+          <div class="panel-head">
+            <div>
+              <h2>Hafta retingi</h2>
+              <p id="ratingHint">Yulduzlar bo‘yicha tartib</p>
+            </div>
+            <span id="weekChip" class="chip">Hafta</span>
+          </div>
+          <div class="table-wrap">
+            <table class="leaderboard">
+              <thead><tr><th>#</th><th>O‘yinchi</th><th>G‘alaba</th><th>Yulduz</th></tr></thead>
+              <tbody id="leaderboardBody"></tbody>
+            </table>
+          </div>
+          <div id="lastSettlement" class="settlement hidden"></div>
+        </section>
+
+        <section class="card panel">
+          <div class="panel-head">
+            <div>
+              <h2>Tanga do‘koni</h2>
+              <p>Donalarga ko‘rinish, ramka va effektlar</p>
+            </div>
+            <span class="chip coin-chip">● <span id="shopCoins">0</span></span>
+          </div>
+          <div id="shopGrid" class="shop-grid"></div>
+        </section>
+      </div>
+
+      <section class="card panel history-panel">
+        <div class="panel-head"><div><h2>Oxirgi haftalar</h2><p>Top-3 va to‘langan tangalar</p></div></div>
+        <div id="historyList" class="history-list"></div>
+      </section>
+    </main>
+
+    <main id="gameScreen" class="screen">
+      <div class="game-layout">
+        <aside class="card game-side">
+          <div class="side-block">
+            <span class="label">O‘yin</span>
+            <strong id="gameTitle">Shashka</strong>
+            <div class="tags"><span id="modeTag" class="tag">Mashq</span><span id="difficultyTag" class="tag">Oson</span></div>
+          </div>
+          <div class="side-block">
+            <span class="label">Siz yutgan donalar</span>
+            <div id="capturedByMe" class="captured">—</div>
+          </div>
+          <div class="side-block">
+            <span class="label">Bot yutgan donalar</span>
+            <div id="capturedByBot" class="captured">—</div>
+          </div>
+          <div class="side-block grow">
+            <span class="label">Yurishlar</span>
+            <div id="moveList" class="move-list"><div class="muted">Hali yurish yo‘q</div></div>
+          </div>
+          <div class="side-actions">
+            <button id="restartBtn" type="button" class="secondary">Qaytadan</button>
+            <button id="menuBtn" type="button" class="ghost">Menyu</button>
+          </div>
+        </aside>
+
+        <section class="board-area">
+          <div class="players-row">
+            <div class="player-chip bot"><span class="avatar">🤖</span><div><strong id="botName">Bot</strong><small>Qora donalar</small></div></div>
+            <div class="player-chip human"><span id="playerAvatar" class="avatar">🙂</span><div><strong id="humanName">Siz</strong><small>Oq donalar — siz yurasiz</small></div></div>
+          </div>
+          <div id="board" class="board" role="grid" aria-label="O‘yin doskasi"></div>
+          <div id="status" class="status">Sizning navbatingiz</div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div id="resultModal" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card">
+      <div id="resultIcon" class="result-icon">★</div>
+      <h2 id="resultTitle">G‘alaba!</h2>
+      <p id="resultText">Botni yutdingiz.</p>
+      <div id="resultRewards" class="result-rewards"></div>
+      <div class="modal-actions">
+        <button id="againBtn" type="button" class="primary">Yana o‘ynash</button>
+        <button id="resultMenuBtn" type="button" class="secondary">Menyu</button>
+      </div>
+    </div>
+    <div id="confetti" class="confetti"></div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/games.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
